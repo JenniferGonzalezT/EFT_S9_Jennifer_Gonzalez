@@ -22,9 +22,8 @@ public class HiloCarga extends Thread {
     
     @Override
     public void run() {
-        System.out.println("HiloCarga: Cargando vehículos desde archivo...");
+        System.out.println("\nCargando vehículos desde archivo...");
         gestor.CargarVehiculosCSV(archivo);
-        System.out.println("HiloCarga: Carga finalizada.");
     }
     
 }

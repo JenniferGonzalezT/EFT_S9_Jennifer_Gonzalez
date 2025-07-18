@@ -9,12 +9,11 @@ import com.drivequestrentals.modelo.*;
 import com.drivequestrentals.servicio.GestionVehiculos;
 
 import java.util.Scanner;
-// Validar que patente, marca y modelo no esten vacias.
 // Separar logica de validacion de entrada del usuario en clase utilidades
-// Clase Vehiculo validaciones en setters por la carga de archivos,
-// formato precios en la boleta
+// Clase Vehiculo validaciones en setters por la carga de archivos
 // En archivos validar que tengan la cantidad de datos y
 // métodos que iteran flota ponerlos en un synchronized(flota)
+// Ver datos desde el archivo.
 
 /**
  * Sistema para catalogar y administrar una flota de vehículos de alquiler.
@@ -132,14 +131,23 @@ public class DriveQuestRentals {
             }
         }
         
-        System.out.print("\nPatente:");
-        String patente = scanner.nextLine().trim().toUpperCase();
+        String patente;
+        do {
+            System.out.print("\nPatente:");
+            patente = scanner.nextLine().trim().toUpperCase();
+        } while (patente.isBlank());
         
-        System.out.print("\nMarca:");
-        String marca = scanner.nextLine().trim();
+        String marca;
+        do {
+            System.out.print("\nMarca:");
+            marca = scanner.nextLine().trim();
+        } while (marca.isBlank());
         
-        System.out.print("\nModelo:");
-        String modelo = scanner.nextLine().trim();
+        String modelo;
+        do {
+            System.out.print("\nModelo:");
+            modelo = scanner.nextLine().trim();
+        } while (modelo.isBlank());
         
         int year = 0;
         datoValido = false;

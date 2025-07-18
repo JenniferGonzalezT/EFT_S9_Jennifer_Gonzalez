@@ -49,12 +49,15 @@ public class VehiculoPasajeros extends Vehiculo implements CalculoBoleta {
 
     @Override
     public void calcularBoleta() {
-        double precioBase = precioPorDia * diasDeArriendo;
-        double precioConDescuento = precioBase * DESCUENTO_PASAJEROS;
-        double descuento = precioBase - precioConDescuento;
-        double precioFinalConIVA = precioConDescuento * IVA;
+        int precioBase = Math.round(precioPorDia * diasDeArriendo);
+        int precioConDescuento = (int) Math.round(precioBase * DESCUENTO_PASAJEROS);
+        int descuento = precioBase - precioConDescuento;
+        int precioFinalConIVA = (int) Math.round(precioConDescuento * IVA);
         
         System.out.println("Boleta Vehículo de Pasajeros:"
+            + "\n-> Patente: " + patente
+            + "\n-> Precio por día: " + precioPorDia
+            + "\n-> Días de arriendo: " + diasDeArriendo
             + "\n-> Precio base: $" + precioBase
             + "\n-> Descuento: $" + descuento
             + "\n-> Precio con descuento: $" + precioConDescuento

@@ -35,6 +35,7 @@ public class GestionVehiculos {
     public void listarVehiculos() {
         for (Vehiculo vehiculo : flota.values()) {
             vehiculo.mostrarDatos();
+            System.out.println();
         }
     }
     
@@ -55,6 +56,7 @@ public class GestionVehiculos {
             if (vehiculo instanceof CalculoBoleta calculoBoleta) {
                 calculoBoleta.calcularBoleta();
             }
+            System.out.println();
         }
     }
     
@@ -67,6 +69,7 @@ public class GestionVehiculos {
     public void CargarVehiculosCSV(String archivo) {
         try (BufferedReader lector = new BufferedReader(new FileReader(archivo))) {
             String linea;
+            lector.readLine(); // Encabezado
             
             while ((linea = lector.readLine()) != null) {
                 String[] datos = linea.split(",");
@@ -75,7 +78,7 @@ public class GestionVehiculos {
                 String marca = datos[2].trim();
                 String modelo = datos[3].trim();
                 int year = Integer.parseInt(datos[4].trim());
-                int precioPorDia = Integer.parseInt(datos[5].trim());
+                int precioPorDia = (int) Math.round(Double.parseDouble(datos[5].trim()));
                 int diasDeArriendo = Integer.parseInt(datos[6].trim());
                 
                 if (tipo.equalsIgnoreCase("Carga")) {

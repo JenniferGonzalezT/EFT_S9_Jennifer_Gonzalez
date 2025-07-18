@@ -14,13 +14,13 @@ public abstract class Vehiculo {
     protected String marca;
     protected String modelo;
     protected int year;
-    protected double precioPorDia;
+    protected int precioPorDia;
     protected int diasDeArriendo;
 
     public Vehiculo() {
     }
 
-    public Vehiculo(String patente, String marca, String modelo, int year, double precioPorDia, int diasDeArriendo) {
+    public Vehiculo(String patente, String marca, String modelo, int year, int precioPorDia, int diasDeArriendo) {
         this.patente = patente;
         this.marca = marca;
         this.modelo = modelo;
@@ -61,11 +61,11 @@ public abstract class Vehiculo {
         this.year = year;
     }
 
-    public double getPrecioPorDia() {
+    public int getPrecioPorDia() {
         return precioPorDia;
     }
 
-    public void setPrecioPorDia(double precioPorDia) {
+    public void setPrecioPorDia(int precioPorDia) {
         this.precioPorDia = precioPorDia;
     }
 
