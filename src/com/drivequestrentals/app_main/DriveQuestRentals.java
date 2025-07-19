@@ -6,14 +6,9 @@ package com.drivequestrentals.app_main;
 
 import com.drivequestrentals.hilo.HiloCarga;
 import com.drivequestrentals.modelo.*;
-import com.drivequestrentals.servicio.GestionVehiculos;
+import com.drivequestrentals.servicio.GestionFlota;
 
 import java.util.Scanner;
-// Separar logica de validacion de entrada del usuario en clase utilidades
-// Clase Vehiculo validaciones en setters por la carga de archivos
-// En archivos validar que tengan la cantidad de datos y
-// métodos que iteran flota ponerlos en un synchronized(flota)
-// Ver datos desde el archivo.
 
 /**
  * Sistema para catalogar y administrar una flota de vehículos de alquiler.
@@ -24,12 +19,13 @@ public class DriveQuestRentals {
     private static final String ARCHIVO_VEHICULOS_CSV = "Vehiculos.csv";
     
     private static final Scanner scanner = new Scanner(System.in);
-    private static final GestionVehiculos gestor = new GestionVehiculos();
+    private static final GestionFlota gestor = new GestionFlota();
     
     public static void main(String[] args) {
         
         System.out.println("¡Bienvenid@ a DriveQuest Rentals!");
         
+        // Cargar archivos en un hilo y esperar a que termine.
         Thread hiloCarga = new HiloCarga(gestor, ARCHIVO_VEHICULOS_CSV);
         hiloCarga.start();
         try {
@@ -38,6 +34,7 @@ public class DriveQuestRentals {
             System.out.println("Hilo interrumpido: " +  e.getMessage());
         }
         
+        // Ménu de opciones
         int opcionMenu;
         do {
             opcionMenu = mostrarMenu();
@@ -59,11 +56,11 @@ public class DriveQuestRentals {
                     break;
                 case 4:
                     System.out.println("\n\n=================== ARRIENDO ===================");
-                    System.out.println("Cantidad de vehículos con arriendo largo (igual o superior a 7 días): " + gestor.VehiculosConArriendoLargo());
+                    System.out.println("Cantidad de vehículos con arriendo largo (igual o superior a 7 días): " + gestor.contarVehiculosConArriendoLargo());
                     break;
                 case 5:
                     System.out.println("\n\n=============== GUARDAR VEHÍCULOS ==============");
-                    gestor.GuardarVehiculosCSV(ARCHIVO_VEHICULOS_CSV);
+                    gestor.guardarVehiculosCSV(ARCHIVO_VEHICULOS_CSV);
                     break;
             }
         } while (opcionMenu != 0);
@@ -133,30 +130,45 @@ public class DriveQuestRentals {
         
         String patente;
         do {
-            System.out.print("\nPatente:");
+            System.out.print("\nPatente: ");
             patente = scanner.nextLine().trim().toUpperCase();
+            if (patente.isBlank()) {
+                System.out.println("La patente no puede estar vacía. Intente nuevamente.");
+            }
         } while (patente.isBlank());
+        
+        if (gestor.existePatente(patente)) {
+            System.out.println("La patente ya existe en la flota. No se puede agregar el vehículo.");
+            return;
+        }
         
         String marca;
         do {
-            System.out.print("\nMarca:");
+            System.out.print("\nMarca: ");
             marca = scanner.nextLine().trim();
+            if (marca.isBlank()) {
+                System.out.println("La marca no puede estar vacía. Intente nuevamente.");
+            }
         } while (marca.isBlank());
         
         String modelo;
         do {
-            System.out.print("\nModelo:");
+            System.out.print("\nModelo: ");
             modelo = scanner.nextLine().trim();
+            if (modelo.isBlank()) {
+                System.out.println("El modelo no puede estar vacío. Intente nuevamente.");
+            }
         } while (modelo.isBlank());
         
         int year = 0;
+        int yearActual = java.time.LocalDate.now().getYear();
         datoValido = false;
         while (!datoValido) {
-            System.out.print("Año: ");
+            System.out.print("\nAño: ");
             String entrada = scanner.nextLine().trim();
             try {
                 year = Integer.parseInt(entrada);
-                if (year <= 0) {
+                if (year < 2000 || year > yearActual) {
                     System.out.println("El año ingresado no es válido. Intente nuevamente.");
                 } else {
                     datoValido = true;
@@ -169,7 +181,7 @@ public class DriveQuestRentals {
         int precioPorDia = 0;
         datoValido = false;
         while (!datoValido) {
-            System.out.print("Precio por día: $");
+            System.out.print("\nPrecio por día: $");
             String entrada = scanner.nextLine().trim();
             try {
                 precioPorDia = Integer.parseInt(entrada);
@@ -186,7 +198,7 @@ public class DriveQuestRentals {
         int diasDeArriendo = 0;
         datoValido = false;
         while (!datoValido) {
-            System.out.print("Días de arriendo: ");
+            System.out.print("\nDías de arriendo: ");
             String entrada = scanner.nextLine().trim();
             try {
                 diasDeArriendo = Integer.parseInt(entrada);
@@ -206,14 +218,14 @@ public class DriveQuestRentals {
                 System.out.print("\nCapacidad de carga (en kilogramos): ");
                 String entrada = scanner.nextLine();
                 try {
-                    double capacidad = Double.parseDouble(entrada);
-                    if (capacidad <= 0) {
+                    double capacidadCarga = Double.parseDouble(entrada);
+                    if (capacidadCarga <= 0) {
                         System.out.println("El número ingresado no es válido. Intente ingresar un número mayor a 0.");
                     } else {
                         datoValido = true;
-                        VehiculoCarga vehiculo = new VehiculoCarga(capacidad, patente, marca, modelo, year, precioPorDia, diasDeArriendo);
+                        VehiculoCarga vehiculo = new VehiculoCarga(capacidadCarga, patente, marca, modelo, year, precioPorDia, diasDeArriendo);
                         if (gestor.agregarVehiculo(vehiculo)) {
-                            System.out.println("¡El vehículo ha sido agregado con éxito a la flota!");
+                            System.out.println("\n¡El vehículo ha sido agregado con éxito a la flota!");
                         } else {
                             System.out.println("El vehículo no se agregará a la flota.");
                         }
@@ -227,13 +239,14 @@ public class DriveQuestRentals {
                 System.out.print("\nMáximo de pasajeros: ");
                 String entrada = scanner.nextLine();
                 try {
-                    int pasajeros = Integer.parseInt(entrada);
-                    if (pasajeros <= 0) {
+                    int capacidadPasajeros = Integer.parseInt(entrada);
+                    if (capacidadPasajeros <= 0) {
                         System.out.println("El número ingresado no es válido. Intente ingresar un número mayor a 0.");
                     } else {
-                        VehiculoPasajeros vehiculo = new VehiculoPasajeros(pasajeros, patente, marca, modelo, year, precioPorDia, diasDeArriendo);
+                        datoValido = true;
+                        VehiculoPasajeros vehiculo = new VehiculoPasajeros(capacidadPasajeros, patente, marca, modelo, year, precioPorDia, diasDeArriendo);
                         if (gestor.agregarVehiculo(vehiculo)) {
-                            System.out.println("¡El vehículo ha sido agregado con éxito a la flota!");
+                            System.out.println("\n¡El vehículo ha sido agregado con éxito a la flota!");
                         } else {
                             System.out.println("El vehículo no se agregará a la flota.");
                         }

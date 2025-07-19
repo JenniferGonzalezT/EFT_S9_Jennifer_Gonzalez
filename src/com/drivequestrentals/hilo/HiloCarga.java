@@ -4,7 +4,7 @@
  */
 package com.drivequestrentals.hilo;
 
-import com.drivequestrentals.servicio.GestionVehiculos;
+import com.drivequestrentals.servicio.GestionFlota;
 
 /**
  * Hilo que hereda de Thread para cargar vehículos.
@@ -12,18 +12,18 @@ import com.drivequestrentals.servicio.GestionVehiculos;
  */
 
 public class HiloCarga extends Thread {
-    private final GestionVehiculos gestor;
+    private final GestionFlota gestor;
     private final String archivo;
 
-    public HiloCarga(GestionVehiculos gestor, String archivo) {
+    public HiloCarga(GestionFlota gestor, String archivo) {
         this.gestor = gestor;
         this.archivo = archivo;
     }
     
     @Override
     public void run() {
-        System.out.println("\nCargando vehículos desde archivo...");
-        gestor.CargarVehiculosCSV(archivo);
+        System.out.println("\nCargando vehículos desde el archivo...");
+        gestor.cargarVehiculosCSV(archivo);
     }
     
 }

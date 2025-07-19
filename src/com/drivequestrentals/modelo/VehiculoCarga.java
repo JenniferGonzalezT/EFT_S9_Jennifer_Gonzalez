@@ -4,6 +4,8 @@
  */
 package com.drivequestrentals.modelo;
 
+import com.drivequestrentals.util.FormatoMoneda;
+
 /**
  * Clase VehiculoCarga que hereda de la clase abstracta Vehiculo e 
  * implementa la interfaz CalculoBoleta.
@@ -17,11 +19,17 @@ public class VehiculoCarga extends Vehiculo implements CalculoBoleta {
     }
 
     public VehiculoCarga(double capacidadCarga) {
+        if (capacidadCarga <= 0) {
+            throw new IllegalArgumentException("La capacidad de carga no es válida (debe ser mayor a 0).");
+        }
         this.capacidadCarga = capacidadCarga;
     }
 
     public VehiculoCarga(double capacidadCarga, String patente, String marca, String modelo, int year, int precioPorDia, int diasDeArriendo) {
         super(patente, marca, modelo, year, precioPorDia, diasDeArriendo);
+        if (capacidadCarga <= 0) {
+            throw new IllegalArgumentException("La capacidad de carga no es válida (debe ser mayor a 0).");
+        }
         this.capacidadCarga = capacidadCarga;
     }
 
@@ -30,6 +38,9 @@ public class VehiculoCarga extends Vehiculo implements CalculoBoleta {
     }
 
     public void setCapacidadCarga(double capacidadCarga) {
+        if (capacidadCarga <= 0) {
+            throw new IllegalArgumentException("La capacidad de carga no es válida (debe ser mayor a 0).");
+        }
         this.capacidadCarga = capacidadCarga;
     }
     
@@ -42,27 +53,27 @@ public class VehiculoCarga extends Vehiculo implements CalculoBoleta {
             + "\n-> Marca: " + marca
             + "\n-> Modelo: " + modelo
             + "\n-> Año: " + year
-            + "\n-> Precio por día: " + precioPorDia
+            + "\n-> Precio por día: " + FormatoMoneda.formatearCLP(precioPorDia)
             + "\n-> Días de arriendo: " + diasDeArriendo
         );
     }
 
     @Override
     public void calcularBoleta() {
-        int precioBase = Math.round(precioPorDia * diasDeArriendo);
-        int precioConDescuento = (int) Math.round(precioBase * DESCUENTO_CARGA);
+        int precioBase = precioPorDia * diasDeArriendo;
+        int precioConDescuento = (int) (precioBase * DESCUENTO_CARGA);
         int descuento = precioBase - precioConDescuento;
-        int precioFinalConIVA = (int) Math.round(precioConDescuento * IVA);
+        int precioFinalConIVA = (int) (precioConDescuento * IVA);
         
         System.out.println("Boleta Vehículo de Carga:"
             + "\n-> Patente: " + patente
-            + "\n-> Precio por día: " + precioPorDia
+            + "\n-> Precio por día: " + FormatoMoneda.formatearCLP(precioPorDia)
             + "\n-> Días de arriendo: " + diasDeArriendo
-            + "\n-> Precio base: $" + precioBase
-            + "\n-> Descuento: $" + descuento
-            + "\n-> Precio con descuento: $" + precioConDescuento
+            + "\n-> Precio base: $" + FormatoMoneda.formatearCLP(precioBase)
+            + "\n-> Descuento: $" + FormatoMoneda.formatearCLP(descuento)
+            + "\n-> Precio con descuento: $" + FormatoMoneda.formatearCLP(precioConDescuento)
             + "\n-> IVA 19% aplicado"
-            + "\nPrecio final: $" + precioFinalConIVA
+            + "\nPrecio final: $" + FormatoMoneda.formatearCLP(precioFinalConIVA)
         );
     }
     
