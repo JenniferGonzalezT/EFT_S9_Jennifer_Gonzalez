@@ -7,7 +7,7 @@ package com.drivequestrentals.hilo;
 import com.drivequestrentals.servicio.GestionFlota;
 
 /**
- * Hilo que hereda de Thread para cargar vehículos.
+ * Clase para Hilo que hereda de Thread para cargar vehículos.
  * @author jennifer
  */
 

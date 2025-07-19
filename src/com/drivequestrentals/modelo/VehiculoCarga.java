@@ -13,8 +13,10 @@ import com.drivequestrentals.util.FormatoMoneda;
  */
 
 public class VehiculoCarga extends Vehiculo implements CalculoBoleta {
+    // Atributo específico
     private double capacidadCarga;
 
+    // Constructores
     public VehiculoCarga() {
     }
 
@@ -33,6 +35,7 @@ public class VehiculoCarga extends Vehiculo implements CalculoBoleta {
         this.capacidadCarga = capacidadCarga;
     }
 
+    // Métodos Getter y Setter específicos
     public double getCapacidadCarga() {
         return capacidadCarga;
     }
@@ -45,6 +48,7 @@ public class VehiculoCarga extends Vehiculo implements CalculoBoleta {
     }
     
     
+    // Sobreescritura del método abstracto heredado para mostar los datos del vehículo de carga
     @Override
     public void mostrarDatos() {
         System.out.println("Vehículo de Carga:"
@@ -58,6 +62,7 @@ public class VehiculoCarga extends Vehiculo implements CalculoBoleta {
         );
     }
 
+    // Sobreescritura del método implementado de la interfaz para calcular y mostrar la boleta
     @Override
     public void calcularBoleta() {
         int precioBase = precioPorDia * diasDeArriendo;

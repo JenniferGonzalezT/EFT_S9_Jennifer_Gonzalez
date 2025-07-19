@@ -10,7 +10,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Clase auxiliar GestionFlota.
+ * Clase auxiliar GestionFlota dedicada a la gestión integral de la flota de vehículos.
  * @author jennifer
  */
 
@@ -48,7 +48,7 @@ public class GestionFlota {
         
     }
     
-    // Método para filtrar vehiculos por arriendo largo
+    // Método para filtrar y contar vehiculos por arriendo largo (>= 7 dias)
     public int contarVehiculosConArriendoLargo() {
         synchronized (flota) {
             int contador = 0;

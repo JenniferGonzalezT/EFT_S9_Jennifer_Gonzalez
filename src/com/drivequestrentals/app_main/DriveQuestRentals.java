@@ -9,7 +9,8 @@ import com.drivequestrentals.modelo.*;
 import com.drivequestrentals.servicio.GestionFlota;
 
 import java.util.Scanner;
-
+// Al menos dos hilos, uno que carge ✅ y otro que valide
+// Deberia mostrar los vehículos con arriendo largo??
 /**
  * Sistema para catalogar y administrar una flota de vehículos de alquiler.
  * @author jennifer

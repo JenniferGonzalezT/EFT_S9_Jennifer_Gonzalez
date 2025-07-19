@@ -10,6 +10,7 @@ package com.drivequestrentals.modelo;
  */
 
 public abstract class Vehiculo {
+    // Atributos
     protected String patente;
     protected String marca;
     protected String modelo;
@@ -17,6 +18,7 @@ public abstract class Vehiculo {
     protected int precioPorDia;
     protected int diasDeArriendo;
 
+    // Constructores: vacío y sobrecargado
     public Vehiculo() {
     }
 
@@ -59,6 +61,7 @@ public abstract class Vehiculo {
         }
     }
 
+    // Métodos Getters y Setters
     public String getPatente() {
         return patente;
     }
@@ -126,6 +129,7 @@ public abstract class Vehiculo {
         this.diasDeArriendo = diasDeArriendo;
     }
     
+    // Método abstracto para mostrar los datos del vehículo según su tipo
     public abstract void mostrarDatos();
     
 }

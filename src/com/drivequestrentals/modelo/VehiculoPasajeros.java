@@ -13,8 +13,10 @@ import com.drivequestrentals.util.FormatoMoneda;
  */
 
 public class VehiculoPasajeros extends Vehiculo implements CalculoBoleta {
+    // Atributo específico
     private int capacidadPasajeros;
 
+    // Constructores
     public VehiculoPasajeros() {
     }
 
@@ -33,6 +35,7 @@ public class VehiculoPasajeros extends Vehiculo implements CalculoBoleta {
         this.capacidadPasajeros = capacidadPasajeros;
     }
 
+    // Métodos Getter y Setter específicos
     public int getCapacidadPasajeros() {
         return capacidadPasajeros;
     }
@@ -45,6 +48,7 @@ public class VehiculoPasajeros extends Vehiculo implements CalculoBoleta {
     }
     
     
+    // Sobreescritura del método abstracto heredado para mostar los datos del vehículo de pasajeros
     @Override
     public void mostrarDatos() {
         System.out.println("Vehículo de Pasajeros:"
@@ -58,6 +62,7 @@ public class VehiculoPasajeros extends Vehiculo implements CalculoBoleta {
         );
     }
 
+    // Sobreescritura del método implementado de la interfaz para calcular y mostrar la boleta
     @Override
     public void calcularBoleta() {
         int precioBase = precioPorDia * diasDeArriendo;

@@ -5,7 +5,7 @@
 package com.drivequestrentals.modelo;
 
 /**
- * Interfaz CalculoBoleta, la cual contiene constantes y métodos para calcular
+ * Interfaz CalculoBoleta, la cual contiene constantes y método para calcular
  * el valor de la boleta.
  * @author jennifer
  */
@@ -16,6 +16,6 @@ public interface CalculoBoleta {
     final double DESCUENTO_CARGA = 0.93;        // -7%
     final double DESCUENTO_PASAJEROS = 0.88;    // -12%
     
-    // Método abstracto
+    // Método abstracto para calcular y mostrar el detalle de la boleta
     void calcularBoleta();
 }
