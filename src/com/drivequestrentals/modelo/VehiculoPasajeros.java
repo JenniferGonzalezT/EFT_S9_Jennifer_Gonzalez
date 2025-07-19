@@ -74,11 +74,11 @@ public class VehiculoPasajeros extends Vehiculo implements CalculoBoleta {
             + "\n-> Patente: " + patente
             + "\n-> Precio por día: " + FormatoMoneda.formatearCLP(precioPorDia)
             + "\n-> Días de arriendo: " + diasDeArriendo
-            + "\n-> Precio base: $" + FormatoMoneda.formatearCLP(precioBase)
-            + "\n-> Descuento: $" + FormatoMoneda.formatearCLP(descuento)
-            + "\n-> Precio con descuento: $" + FormatoMoneda.formatearCLP(precioConDescuento)
+            + "\n-> Precio base: " + FormatoMoneda.formatearCLP(precioBase)
+            + "\n-> Descuento: " + FormatoMoneda.formatearCLP(descuento)
+            + "\n-> Precio con descuento: " + FormatoMoneda.formatearCLP(precioConDescuento)
             + "\n-> IVA 19% aplicado"
-            + "\nPrecio final: $" + FormatoMoneda.formatearCLP(precioFinalConIVA)
+            + "\nPrecio final: " + FormatoMoneda.formatearCLP(precioFinalConIVA)
         );
     }
     
