@@ -36,7 +36,8 @@ public class HiloValidador implements Runnable {
         } catch (IllegalStateException e) {
             System.out.println(Thread.currentThread().getName() + ": Termina su tarea por error en la carga.");
         } catch (InterruptedException eh) {
-            System.out.println(Thread.currentThread().getName() + " fue interrumpido.");
+            System.out.println(Thread.currentThread().getName() + " interrumpido: " + eh.getMessage());
+            Thread.currentThread().interrupt();
         }
         
         // Agregar vehiculos a la flota

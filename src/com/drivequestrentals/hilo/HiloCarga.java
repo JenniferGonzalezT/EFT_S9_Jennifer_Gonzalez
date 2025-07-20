@@ -78,7 +78,8 @@ public class HiloCarga implements Runnable {
             System.out.println("Error al cargar los vehículos desde el archivo: " + ea.getMessage());
             coordinador.errorEnCarga();
         } catch (InterruptedException eh) {
-            System.out.println(Thread.currentThread().getName() + ": Hilo interrumpido. " + eh.getMessage());
+            System.out.println(Thread.currentThread().getName() + " interrumpido: " + eh.getMessage());
+            Thread.currentThread().interrupt();
         }
             
         System.out.println(Thread.currentThread().getName() + ": Ha finalizado.");

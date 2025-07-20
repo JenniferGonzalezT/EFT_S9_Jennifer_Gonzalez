@@ -29,7 +29,7 @@ public class DriveQuestRentals {
         
         System.out.println("¡Bienvenid@ a DriveQuest Rentals!\n");
         
-        // Instanciar hilos de carga y validacion de vehiculos
+        // Instanciar hilos de carga y validación de vehículos
         Thread hiloCarga = new Thread(new HiloCarga(colaVehiculos, ARCHIVO_VEHICULOS_CSV, coordinador),"Hilo Carga");
         Thread hiloValidador = new Thread(new HiloValidador(colaVehiculos, gestor, coordinador), "Hilo Validador");
         
@@ -42,7 +42,8 @@ public class DriveQuestRentals {
             hiloCarga.join();
             hiloValidador.join();
         } catch (InterruptedException e) {
-            System.out.println("Hilo interrumpido: " +  e.getMessage());
+            System.out.println(Thread.currentThread().getName() + " interrumpido: " +  e.getMessage());
+            Thread.currentThread().interrupt();
         }
         
         // Ménu de opciones
@@ -79,7 +80,7 @@ public class DriveQuestRentals {
     }
     
     
-    // Método para mostrar el menú y devolver la opción elegida.
+    // Método para mostrar el menú y devolver la opción elegida
     static int mostrarMenu() {
         System.out.println("\n\n===================== MENÚ =====================");
         System.out.println("(1) Agregar vehículo");
