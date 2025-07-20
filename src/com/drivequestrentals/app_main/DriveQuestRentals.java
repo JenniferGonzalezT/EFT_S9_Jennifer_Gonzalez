@@ -181,12 +181,12 @@ public class DriveQuestRentals {
             try {
                 year = Integer.parseInt(entrada);
                 if (year < 2000 || year > yearActual) {
-                    System.out.println("El año ingresado no es válido. Intente nuevamente.");
+                    System.out.println("El año ingresado no es válido. Intente nuevamente (2000 -" + yearActual +").");
                 } else {
                     datoValido = true;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("El dato ingresado no es válido. Recuerde ingresar un número entero positivo.");
+                System.out.println("El dato ingresado no es válido. Recuerde ingresar un número del 2000 al " + yearActual +".");
             }
         }
         

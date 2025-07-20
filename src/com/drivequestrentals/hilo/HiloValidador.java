@@ -49,8 +49,13 @@ public class HiloValidador implements Runnable {
                 break;
             }
             
-            gestor.agregarVehiculo(vehiculo);
-            System.out.println("Vehículo agregado: " + vehiculo.getPatente());
+            
+            if (gestor.agregarVehiculo(vehiculo)) {
+                System.out.println(Thread.currentThread().getName() + " ha agregado: " + vehiculo.getPatente());
+            } else {
+                System.out.println(Thread.currentThread().getName() + " ha descartado: " + vehiculo.getPatente());
+            }
+            
         }
         
         System.out.println(Thread.currentThread().getName() + ": Ha finalizado.");
