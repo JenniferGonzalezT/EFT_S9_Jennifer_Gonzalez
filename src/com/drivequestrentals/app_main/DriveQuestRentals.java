@@ -4,33 +4,43 @@
  */
 package com.drivequestrentals.app_main;
 
-import com.drivequestrentals.hilo.HiloCarga;
+import com.drivequestrentals.hilo.*;
 import com.drivequestrentals.modelo.*;
 import com.drivequestrentals.servicio.GestionFlota;
 
 import java.util.Scanner;
-// Al menos dos hilos, uno que carge ✅ y otro que valide
-// Deberia mostrar los vehículos con arriendo largo??
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 /**
  * Sistema para catalogar y administrar una flota de vehículos de alquiler.
  * @author jennifer
  */
 
 public class DriveQuestRentals {
-    private static final String ARCHIVO_VEHICULOS_CSV = "Vehiculos.csv";
+    private static final String ARCHIVO_VEHICULOS_CSV = "VehiculosE.csv";
     
     private static final Scanner scanner = new Scanner(System.in);
     private static final GestionFlota gestor = new GestionFlota();
+    private static final BlockingQueue<Vehiculo> colaVehiculos = new LinkedBlockingQueue<>();
+    private static final Coordinador coordinador = new Coordinador();
     
     public static void main(String[] args) {
         
-        System.out.println("¡Bienvenid@ a DriveQuest Rentals!");
+        System.out.println("¡Bienvenid@ a DriveQuest Rentals!\n");
         
-        // Cargar archivos en un hilo y esperar a que termine.
-        Thread hiloCarga = new HiloCarga(gestor, ARCHIVO_VEHICULOS_CSV);
+        // Instanciar hilos de carga y validacion de vehiculos
+        Thread hiloCarga = new Thread(new HiloCarga(colaVehiculos, ARCHIVO_VEHICULOS_CSV, coordinador),"Hilo Carga");
+        Thread hiloValidador = new Thread(new HiloValidador(colaVehiculos, gestor, coordinador), "Hilo Validador");
+        
+        // Iniciar hilos
         hiloCarga.start();
+        hiloValidador.start();
+        
+        // Esperar a que finalicen los hilos
         try {
             hiloCarga.join();
+            hiloValidador.join();
         } catch (InterruptedException e) {
             System.out.println("Hilo interrumpido: " +  e.getMessage());
         }

@@ -52,7 +52,7 @@ public class VehiculoCarga extends Vehiculo implements CalculoBoleta {
     @Override
     public void mostrarDatos() {
         System.out.println("Vehículo de Carga:"
-            + "\n-> Capacidad de carga: " + capacidadCarga + " kilos."
+            + "\n-> Capacidad de carga: " + String.format("%.1f", capacidadCarga) + " kilos."
             + "\n-> Patente: " + patente
             + "\n-> Marca: " + marca
             + "\n-> Modelo: " + modelo

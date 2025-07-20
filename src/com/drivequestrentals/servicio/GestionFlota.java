@@ -40,12 +40,16 @@ public class GestionFlota {
     // Método para listar todos los vehículos registrados
     public void listarVehiculos() {
         synchronized (flota) {
+            if (flota.isEmpty()) {
+                System.out.println("Aún no hay vehículos en la flota para mostrar.");
+                return;
+            }
+            
             for (Vehiculo vehiculo : flota.values()) {
                 vehiculo.mostrarDatos();
                 System.out.println();
             }
         }
-        
     }
     
     // Método para filtrar y contar vehiculos por arriendo largo (>= 7 dias)
@@ -64,6 +68,11 @@ public class GestionFlota {
     // Método para mostrar las boletas
     public void mostrarBoletas() {
         synchronized (flota) {
+            if (flota.isEmpty()) {
+                System.out.println("No hay boletas para mostrar.");
+                return;
+            }
+            
             for (Vehiculo vehiculo : flota.values()) {
                 if (vehiculo instanceof CalculoBoleta calculoBoleta) {
                     calculoBoleta.calcularBoleta();
@@ -72,75 +81,35 @@ public class GestionFlota {
             }
         }
     }
-    
-    // Método para cargar los vehículos desde un archivo csv
-    public void cargarVehiculosCSV(String archivo) {
-        try (BufferedReader lector = new BufferedReader(new FileReader(archivo))) {
-            String linea;
-            lector.readLine(); // Encabezado
-            
-            while ((linea = lector.readLine()) != null) {
-                String[] datos = linea.split(",");
-                
-                if (datos.length == 8) {
-                    try {
-                        String tipo = datos[0].trim().toUpperCase();
-                        String patente = datos[1].trim().toUpperCase();
-                        String marca = datos[2].trim();
-                        String modelo = datos[3].trim();
-                        int year = Integer.parseInt(datos[4].trim());
-                        int precioPorDia = Integer.parseInt(datos[5].trim());
-                        int diasDeArriendo = Integer.parseInt(datos[6].trim());
 
-                        if (tipo.equalsIgnoreCase("CARGA")) {
-                            double capacidadCarga = Double.parseDouble(datos[7].trim());
-                            agregarVehiculo(new VehiculoCarga(capacidadCarga, patente, marca, modelo, year, precioPorDia, diasDeArriendo));
-                        } else if (tipo.equalsIgnoreCase("PASAJEROS")) {
-                            int capacidadPasajeros = Integer.parseInt(datos[7].trim());
-                            agregarVehiculo(new VehiculoPasajeros(capacidadPasajeros, patente, marca, modelo, year, precioPorDia, diasDeArriendo));
-                        } else {
-                            System.out.println("Vehículo omitido \"" + linea + "\": El tipo de vehículo no es válido.");
-                        }
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Vehículo omitido \"" + linea + "\": " + e.getMessage());
-                    }
-                    
-                } else {
-                    System.out.println("Vehículo omitido \"" + linea + "\": El formato no es válido.");
-                }
-            }
-            System.out.println("Vehículos cargados correctamente desde el archivo.");
-        } catch (IOException e) {
-            System.out.println("Error al cargar los vehículos desde el archivo: " + e.getMessage());
-        }
-    }
-    
     // Método para guardar vehículos en un archivo csv
     public void guardarVehiculosCSV(String archivo) {
+        if (flota.isEmpty()) {
+            System.out.println("No hay vehículos para guardar.");
+            return;
+        }
+        
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(archivo))) {
             escritor.write("tipo,patente,marca,modelo,year,precioPorDia,diasDeArriendo,capacidad"); // Encabezado
             escritor.newLine();
-            
+
             for (Vehiculo vehiculo : flota.values()) {
                 String linea= "";
-                
+
                 if (vehiculo instanceof VehiculoCarga vc) {
                     linea = "CARGA," + vc.getPatente() + "," + vc.getMarca() + "," + vc.getModelo() + "," + vc.getYear() + "," + vc.getPrecioPorDia() + "," + vc.getDiasDeArriendo() + "," + vc.getCapacidadCarga();
                 } else if (vehiculo instanceof VehiculoPasajeros vp) {
                     linea = "PASAJEROS," + vp.getPatente() + "," + vp.getMarca() + "," + vp.getModelo() + "," + vp.getYear() + "," + vp.getPrecioPorDia() + "," + vp.getDiasDeArriendo() + "," + vp.getCapacidadPasajeros();
                 }
-                
+
                 escritor.write(linea);
                 escritor.newLine();
-            }
-            if (flota.isEmpty()) {
-                System.out.println("No hay vehículos para guardar.");
-            } else {
-                System.out.println("Los vehículos han sido guardados correctamente en el archivo.");
             }
         } catch (IOException e) {
             System.out.println("Error al guardar los vehículos en el archivo: " + e.getMessage());
         }
+
+        System.out.println("Los vehículos han sido guardados correctamente en el archivo.");
     }
     
 }

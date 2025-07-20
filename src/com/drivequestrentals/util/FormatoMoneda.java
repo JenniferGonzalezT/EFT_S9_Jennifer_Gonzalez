@@ -15,12 +15,14 @@ import java.util.Locale;
 public class FormatoMoneda {
     private static final Locale LOCALE_CL = Locale.forLanguageTag("es-CL");
     private static final NumberFormat CLP = NumberFormat.getCurrencyInstance(LOCALE_CL);
-
+    
+    // Constructor privado para evitar que se instancie la clase
     private FormatoMoneda() {
     }
     
+    // Método para darle el formato de pesos chilenos
     public static String formatearCLP(double valor) {
         return CLP.format(valor);
     }
-        
+    
 }
