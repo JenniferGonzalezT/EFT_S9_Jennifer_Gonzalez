@@ -18,7 +18,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 
 public class DriveQuestRentals {
-    private static final String ARCHIVO_VEHICULOS_CSV = "VehiculosE.csv";
+    private static final String ARCHIVO_VEHICULOS_CSV = "vehiculos.csv";
     
     private static final Scanner scanner = new Scanner(System.in);
     private static final GestionFlota gestor = new GestionFlota();
